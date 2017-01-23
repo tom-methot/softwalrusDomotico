@@ -1,0 +1,40 @@
+{
+  "plugins": [
+    {
+      "name": "time",
+      "action": "/sarah/time",
+      "items": [
+        "il est quelle heure",
+        "quelle heure est il ici",
+        "peux tu me donner l'heure",
+        "tu peux me donner l'heure"
+      ]
+    },
+    {
+      "name": "test",
+      "action": "/sarah/test",
+      "items": [
+        "fait un test",
+        "démarre le test",
+        "start le test"
+      ]
+    },
+	{
+      "name": "demo1",
+      "action": "/sarah/test",
+      "items": [
+        "es tu la",
+        "tu es la"
+      ]
+    },
+	{
+      "name": "demo2",
+      "action": "/sarah/demo2",
+      "items": [
+        "tu est cool",
+        "tu es chouette",
+		"tu es sympa"
+      ]
+    }
+  ]
+}

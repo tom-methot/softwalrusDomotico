@@ -1,0 +1,10 @@
+{
+  "modules" : { 
+    "request"  : {
+      "description": "plugin.test.description",
+      "version": "1.0",
+      "w": 3, 
+      "h": 3
+    }
+  }
+}
