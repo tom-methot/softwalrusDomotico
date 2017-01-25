@@ -35,6 +35,14 @@
         "tu es chouette",
 		"tu es sympa"
       ]
+    },
+	{
+      "name": "hs100",
+      "action": "/sarah/hs100",
+      "items": [
+        "allume la prise",
+        "éteind la prise"
+      ]
     }
   ]
 }

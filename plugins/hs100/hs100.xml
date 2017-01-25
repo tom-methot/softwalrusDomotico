@@ -1,0 +1,16 @@
+<grammar version="1.0" xml:lang="fr-FR" mode="voice" root="ruleHS100"  tag-format="semantics/1.0" xmlns="http://www.w3.org/2001/06/grammar" xmlns:sapi="http://schemas.microsoft.com/Speech/2002/06/SRGSExtensions">
+  <!-- ========================================== -->
+
+  <rule id="ruleHS100" scope="public">
+    <example>Sarah allume la prise</example>
+    <tag>out.action=new Object();</tag>
+    <item>Sarah</item>
+    <one-of>
+      <item>allume la prise <tag>out.action.state="on"; out.action._attributes.tts="OK j'allume la prise"</tag></item>
+      <item>éteind la prise <tag>out.action.state="off"; out.action._attributes.tts="OK j'éteins la prise"</tag></item>
+    </one-of>
+    
+    <tag>out.action._attributes.uri="http://127.0.0.1:8080/sarah/hs100";</tag>
+  </rule>
+</grammar>
+

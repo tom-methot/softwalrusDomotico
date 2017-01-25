@@ -1,0 +1,11 @@
+{
+  "modules" : { 
+    "meteo"  : {
+      "description": "Recherche la météo en ligne",
+      "version": "2.3",
+      "zip": "786460",
+      "date": "3",
+      "w" : "2"
+    }
+  }
+}

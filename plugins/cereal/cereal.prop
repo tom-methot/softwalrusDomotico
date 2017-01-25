@@ -1,0 +1,10 @@
+{
+  "modules" : { 
+    "cereal"  : {
+      "description": "Controle d'une prise intelligente TP-Link HS100 - HS110 qui démarre un arduino pour distribuer des céréales",
+      "version": "0,1",
+	  "Auteur": "Sebastien Pellerin",
+	  "Catégorie": "Speech"
+    }
+  }
+}

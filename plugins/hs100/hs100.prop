@@ -1,0 +1,10 @@
+{
+  "modules" : { 
+    "hs100"  : {
+      "description": "Controle d'une prise intelligente TP-Link HS100 - HS110",
+      "version": "0,1",
+	  "Auteur": "Sebastien Pellerin",
+	  "Catégorie": "Speech"
+    }
+  }
+}

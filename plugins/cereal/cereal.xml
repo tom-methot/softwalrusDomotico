@@ -1,0 +1,16 @@
+<grammar version="1.0" xml:lang="fr-FR" mode="voice" root="ruleCereal"  tag-format="semantics/1.0" xmlns="http://www.w3.org/2001/06/grammar" xmlns:sapi="http://schemas.microsoft.com/Speech/2002/06/SRGSExtensions">
+  <!-- ========================================== -->
+
+  <rule id="ruleCereal" scope="public">
+    <example>Sarah sert-moi des céréales</example>
+    <tag>out.action=new Object();</tag>
+    <item>Sarah</item>
+    <one-of>
+      <item>sert-moi des céréales <tag>out.action.state="on"; out.action._attributes.tts="Un instant"</tag></item>
+      <item>donne-moi des céréales <tag>out.action.state="on"; out.action._attributes.tts="Un instant"</tag></item>
+    </one-of>
+    
+    <tag>out.action._attributes.uri="http://127.0.0.1:8080/sarah/cereal";</tag>
+  </rule>
+</grammar>
+
