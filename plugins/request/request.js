@@ -1,40 +1,39 @@
-﻿var fuzz = require('fuzzball');
-const util = require('util');
-const fs = require('fs');
-const path = require('path')
-const Parser  = require('xml2js');
-
-var obj;
-
-function getDirectories (srcpath) {
-  return fs.readdirSync(srcpath)
-    .filter(file => fs.statSync(path.join(srcpath, file)).isDirectory())
-}
-
-
+﻿var fuzz        = require('fuzzball');
+var util        = require('util');
+var fs          = require('fs');
+var path        = require('path');
+var Parser      = require('xml2js');
+var jsonFile    = require("./data.json");
 
 exports.init = function(){
-    // Initialize resources of this plugin
-    // All declared variables are scoped to this plugin 
-  
     info('Plugin REQUEST is initializing ...');
+
+    var directories = getDirectories("./plugins");
     
-    
-    obj = require("./data.json");
-  
-    /*var directories = getDirectories("./plugins");
-    info(directories);
-    
+    var arr = {};
+    arr.plugins = {};
     for(i in directories){
+        arr.plugins[directories[i]] = {};
+        arr.plugins[directories[i]].items = [];
         var parser = new Parser.Parser();
-        info(__dirname + '/../' + directories[i] + '/' + directories[i] + '.xml');
-        fs.readFile(__dirname + '/../' + directories[i] + '/' + directories[i] + '.xml', function(err, data) {
+        
+		if (fs.existsSync(__dirname + '/../' + directories[i] + '/' + directories[i] + '.xml')) {
+            var data = fs.readFileSync(__dirname + '/../' + directories[i] + '/' + directories[i] + '.xml');
             parser.parseString(data, function (err, result) {
-                console.dir(result);
-                console.log('Done');
+                for(k in result.grammar.rule[0]["one-of"][0]['item']){
+                    if(result.grammar.rule[0]["one-of"][0]['item'][k]._ !== undefined){
+                        arr.plugins[directories[i]]["items"].push(result.grammar.rule[0]["one-of"][0]['item'][k]._);
+                    };
+                    if(result.grammar.rule[0]["one-of"][0]['item'][k].tag !== undefined){
+                        arr.plugins[directories[i]]["tag"] = result.grammar.rule[0]["one-of"][0]['item'][k].tag;
+                    };
+                };
             });
-        }); 
-    }*/
+        };
+    };
+    fs.writeFile('./plugins/request/data.json',JSON.stringify(arr,null,4),function(err){
+        if(err) throw err;
+    });
 }
 
 exports.dispose = function(){
@@ -62,13 +61,14 @@ exports.standBy = function(motion, device){
 
 exports.action = function(data, next){
   // Called by SARAH to perform main action
-  
-    /*var nextFunction;
+    var nextFunction;
     var query = data.query;
     info("query : " + query);
-    for(i in obj['plugins']){
-        
-        var choices = obj['plugins'][i].items
+    
+    console.log(jsonFile);
+    for(i in jsonFile['plugins']){
+        console.log(jsonFile['plugins'][i].items);
+        var choices = jsonFile['plugins'][i].items;
         var options = {
                 scorer: fuzz.partial_ratio, // any function that takes two strings and returns a score, default: ratio
                 limit: 1, // max number of top results to return, default: no limit / 0.
@@ -78,52 +78,28 @@ exports.action = function(data, next){
 
         var results = fuzz.extract(query, choices, options);
         if(results.length > 0){
-            info("plugin : " + obj['plugins'][i].name + " search result : " + results);
+            info("plugin : " + i + " search result : " + results);
             info("CALL PLUGIN");
-            var e = SARAH.exists(obj['plugins'][i].name);
+            var e = SARAH.exists(jsonFile['plugins'][i].name);
             info("plugins exist ? " + e);
             if(e == true){
-                //SARAH.run(obj['plugins'][i].name);
-                SARAH.call(obj['plugins'][i].name, {"state" : "off", "tts" : "voila ces fait !"}, function(options){ 
+                //SARAH.run(jsonFile['plugins'][i].name);
+                SARAH.call(jsonFile['plugins'][i].name, {"state" : "off", "tts" : "voila ces fait !"}, function(options){ 
                     console.log(util.inspect(options, false, null));
                     nextFunction = options;
                 });
             }
+			else{
+				nextFunction = {'tts': 'plugin trouver dans xml existe pas'};
+			}
             break;
         }
     }
     
-  next(nextFunction);*/
-    var directories = getDirectories("./plugins");
-    
-    for(i in directories){
-        info("Directory ------> " + directories[i] + " i: " + i);
-        var parser = new Parser.Parser();
-        if (fs.existsSync(__dirname + '/../' + directories[i] + '/' + directories[i] + '.xml')) {
-            fs.readFile(__dirname + '/../' + directories[i] + '/' + directories[i] + '.xml', function(err, data) {
-                parser.parseString(data, function (err, result) {
-                    for(k in result.grammar.rule[0]["one-of"][0]['item']){
-                        console.log("item = : " + k);
-                        console.log(result.grammar.rule[0]["one-of"][0]['item'][k]);
-                        
-                        if(result.grammar.rule[0]["one-of"][0]['item'][k]._ != undefined){
-                            //TODO
-                        }
-                        
-                        if(result.grammar.rule[0]["one-of"][0]['item'][k].tag != undefined){
-                            //TODO
-                        }
-              
-                    }
-                    console.log('-------------------------');
-                });
-            });
-            
-        }
-    }
-  
-  next();
+  next(nextFunction);
 }
 
-
-
+function getDirectories (srcpath) {
+  return fs.readdirSync(srcpath)
+    .filter(file => fs.statSync(path.join(srcpath, file)).isDirectory())
+}
